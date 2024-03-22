@@ -60,16 +60,17 @@
             top: 30px;
         }
     </style>
+    <script src="https://pixijs.download/release/pixi.min.js"></script>
 </head>
 
 <body>
     <main>
-        <div align="center">
+        <!-- <div align="center">
             <a href="https://ton.org/"><img width="48" src="./assets/logo-horse.png" alt="logo of telegram web apps"></a>
-        </div>
+        </div> -->
         <h1>Egor LOX</h1>
-        <button onclick="Telegram.WebApp.showAlert('Ладно не лох!!');">Launch Alert</button>
-        <button onclick="showPopup();">Но это не точно</button>
+        <!-- <button onclick="Telegram.WebApp.showAlert('Ладно не лох!!');">Launch Alert</button>
+        <button onclick="showPopup();">Но это не точно</button> -->
 
         <!-- <h1>Links</h1>
         <ul>
@@ -84,13 +85,33 @@
             </li>
         </ul> -->
 
-        <h1>Buttons</h1>
+        <script type="module">
+            // Create the application helper and add its render target to the page
+            const app = new PIXI.Application();
+            await app.init({ width: 640, height: 360 })
+            document.body.appendChild(app.canvas);
+      
+            // Create the sprite and add it to the stage
+            await PIXI.Assets.load('./assets/logo-horse.png');
+            let sprite = PIXI.Sprite.from('./assets/logo-horse.png');
+            app.stage.addChild(sprite);
+      
+            // Add a ticker callback to move the sprite back and forth
+            let elapsed = 0.0;
+            app.ticker.add((ticker) => {
+              elapsed += ticker.deltaTime;
+              sprite.x = 100.0 + Math.cos(elapsed/50.0) * 100.0;
+            });
+          </script>
+
+        <!-- <h1>Buttons</h1> -->
         <button onclick="Telegram.WebApp.expand();">Expand Webview</button>
         <button onclick="toggleMainButton();">Toggle Main Button</button>
+        
     </main>
-    <div id="viewport"></div>
+    <!-- <div id="viewport"></div>
     <div id="viewport-params-size"></div>
-    <div id="viewport-params-expand"></div>
+    <div id="viewport-params-expand"></div> -->
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <script>
         // Init TWA
@@ -146,7 +167,7 @@
 
         Telegram.WebApp.setHeaderColor('secondary_bg_color');
 
-        setViewportData();
+        //setViewportData();
         Telegram.WebApp.onEvent('viewportChanged', setViewportData);
 
         Telegram.WebApp.onEvent('themeChanged', function() {
